@@ -8,7 +8,7 @@ let array = [
         complete: false,
     },
     {
-        name: 'Завтрак',
+        name: 'Завтрак', 
         complete: false,
     },
     {
@@ -17,13 +17,14 @@ let array = [
     },
 ]
 
+
 function createTask (name) {
     if (!name || name.trim() === '') {
         console.log('Ошибка: Название задачи не может быть пустым!');
         return;
     }
     const task = {
-        name: 'Обед',
+        name: name,
         complete: false,
     };
     array.push(task);
@@ -38,12 +39,6 @@ function toggleTaskStatus (index) {
     array[index].complete = !array[index].complete;
 }
 toggleTaskStatus(0);
-
-
-
-function toggleTaskStatus (index) {
-    array[index].complete = !array[index].complete;
-}
 toggleTaskStatus(1);
 
 
