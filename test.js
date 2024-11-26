@@ -38,6 +38,7 @@ createTask('Обед');
 function toggleTaskStatus (index) {
     array[index].complete = !array[index].complete;
 }
+
 toggleTaskStatus(0);
 toggleTaskStatus(1);
 
