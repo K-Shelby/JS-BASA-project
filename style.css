@@ -1,0 +1,33 @@
+.task-checkbox {
+    margin-right: 10px;
+}
+
+li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.delete-button {
+    margin-left: auto;
+}
+
+.filter-buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.filter-buttons button {
+    padding: 5px 15px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+}
+
+.filter-buttons button:hover {
+    background-color: #f0f0f0;
+}

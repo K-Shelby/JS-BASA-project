@@ -1,67 +1,114 @@
-let array = [
-    {
-        name: 'Подъём в 8:00',
-        complete: false,
-    },
-    {
-        name: 'Утренняя зарядка',
-        complete: false,
-    },
-    {
-        name: 'Завтрак', 
-        complete: false,
-    },
-    {
-        name: 'Тренировка',
-        complete: false,
-    },
-]
+const taskInput = document.getElementById('taskInput');
+const addButton = document.getElementById('addTask');
+const taskList = document.getElementById('taskList');
 
+function addTask() {
+    const taskText = taskInput.value.trim();
+    const li = document.createElement('li');
+    
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.className = 'task-checkbox';
+    
+    const taskSpan = document.createElement('span');
+    taskSpan.textContent = taskText;
 
-function createTask (name) {
-    if (!name || name.trim() === '') {
-        console.log('Ошибка: Название задачи не может быть пустым!');
-        return;
-    }
-    const task = {
-        name: name,
-        complete: false,
-    };
-    array.push(task);
-}
+    taskSpan.addEventListener('dblclick', function() {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = taskSpan.textContent;
+        input.className = 'edit-input';
 
-createTask('Обед');
+        li.replaceChild(input, taskSpan);
+        input.focus();
 
+        input.addEventListener('blur', function() {
+            const newText = input.value.trim();
+            taskSpan.textContent = newText;
+            li.replaceChild(taskSpan, input);
+        });
 
-
-
-function toggleTaskStatus (index) {
-    array[index].complete = !array[index].complete;
-}
-
-toggleTaskStatus(0);
-toggleTaskStatus(1);
-
-
-
-function deleteTask (name) {
-    const index = array.findIndex(task => task.name === name);
-    if (index !== -1) {
-        array.splice(index, 2);
-    } else {
-        console.log('Задача не найдена!');
-    }
-}
-
-deleteTask('Подъём в 8:00');
-console.log(array);
-
-function showAllTasks() {
-    array.forEach((task, index) => {
-        const status = task.complete ? 'выполнена' : 'не выполнена';
-        console.log(`${index + 1}. ${task.name} - ${status}`);
+        input.addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') {
+                input.blur();
+            }
+        });
     });
+    
+    checkbox.addEventListener('change', function() {
+        if (checkbox.checked) {
+            taskSpan.style.textDecoration = 'line-through';
+            taskSpan.style.color = '#888';
+        } else {
+            taskSpan.style.textDecoration = 'none';
+            taskSpan.style.color = '#000';
+        }
+    });
+
+    const deleteTask = document.createElement('button');
+    deleteTask.textContent = 'Удалить задачу';
+    deleteTask.className = 'delete-button';
+
+    deleteTask.addEventListener('click', function() {
+        li.remove();
+    });
+
+    li.appendChild(checkbox);
+    li.appendChild(taskSpan);
+    li.appendChild(deleteTask);
+    
+    taskList.appendChild(li);
+    taskInput.value = '';
+    
+
+    function filterTasks(filter) {
+        const tasks = taskList.querySelectorAll('li');
+        
+        tasks.forEach(task => {
+            const checkbox = task.querySelector('.task-checkbox');
+            switch(filter) {
+                case 'all':
+                    task.style.display = 'flex';
+                    break;
+                case 'completed':
+                    task.style.display = checkbox.checked ? 'flex' : 'none';
+                    break;
+                case 'active':
+                    task.style.display = !checkbox.checked ? 'flex' : 'none';
+                    break;
+            }
+        });
+    }
+    document.getElementById('showAll').addEventListener('click', () => filterTasks('all'));
+    document.getElementById('showCompleted').addEventListener('click', () => filterTasks('completed'));
+    document.getElementById('showActive').addEventListener('click', () => filterTasks('active'));
 }
 
-showAllTasks();
+addButton.addEventListener('click', addTask);
+
+
+
+
+
+
+
+
+
+
+
+
+nameInput.addEventListener('click', function() {
+    const name = nameInput.value.trim();
+    if (name) {
+        localStorage.setItem('addName', name);
+    }
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const savedName = localStorage.getItem('addName');
+    if (savedName) {
+        nameInput.value = savedName;
+    }
+});
 
